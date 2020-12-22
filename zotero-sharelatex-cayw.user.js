@@ -4,7 +4,7 @@
 // @namespace       https://github.com/dlukes
 // @author          dlukes
 // @description     Insert citations from Zotero into ShareLaTeX as you write.
-// @match           *://sharelatex.korpus.cz/*
+// @match           *://www.overleaf.com/project/*
 // @run-at          document-end
 // @grant           unsafeWindow
 // @grant           GM.xmlHttpRequest
@@ -127,12 +127,7 @@ function zoteroInsertBibliography() {
   const doc = editor.session.toString();
   const match = COLLECTION_RE.exec(doc);
   let collection;
-  if (match) {
-    collection = "collection?/" + match[1];
-  } else {
-    if (!zotWarnAndAsk()) return;
-    collection = "library?/0/library.biblatex";
-  }
+  collection = "library?/1/library.biblatex";
   zoteroFetchAndInsert(
     "http://localhost:23119/better-bibtex/" + collection,
     // TODO: you can manipulate the string before it's inserted -- e.g.
@@ -156,6 +151,12 @@ window.onkeyup = (ev) => {
     zoteroInsertBibliography();
   } else if (ev.ctrlKey && ev.keyCode === 190) {
     zoteroCite();
+  } else if (ev.keyCode === 120) {
+      // F9
+    zoteroInsertBibliography();
+  } else if (ev.keyCode === 121) {
+      // F10
+      zoteroCite();
   }
 };
 
